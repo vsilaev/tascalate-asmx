@@ -19,6 +19,11 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>net.tascalate</groupId>
+			<artifactId>net.tascalate.asmx.analysis</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.ow2.asm</groupId>
 			<artifactId>asm-util</artifactId>
 			<scope>runtime</scope>
@@ -34,6 +39,19 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
+				<executions>
+					<execution>
+						<configuration>
+							<artifactSet>
+								<excludes>
+									<exclude>net.tascalate:net.tascalate.asmx</exclude>
+									<exclude>net.tascalate:net.tascalate.asmx.tree</exclude>
+									<exclude>net.tascalate:net.tascalate.asmx.analysis</exclude>
+								</excludes>
+							</artifactSet>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

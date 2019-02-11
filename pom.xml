@@ -134,8 +134,6 @@
 							</execution>
 						</executions>
 						<configuration>
-							<!-- SKIP JAVADOS - SHADE ONLY -->
-							<skip>true</skip>
 						</configuration>
 					</plugin>
 					<plugin>

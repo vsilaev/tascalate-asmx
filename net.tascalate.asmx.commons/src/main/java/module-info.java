@@ -31,8 +31,8 @@
  */
 module net.tascalate.asmx.commons {
     requires transitive net.tascalate.asmx;
-    requires transitive net.tascalate.asmx.tree; // Used as superclasses - transitive???
-    requires net.tascalate.asmx.tree.analysis;
+    requires transitive net.tascalate.asmx.tree;
+    requires net.tascalate.asmx.tree.analysis; // transitive in ASM, not necessary
 
     exports net.tascalate.asmx.commons;
 }

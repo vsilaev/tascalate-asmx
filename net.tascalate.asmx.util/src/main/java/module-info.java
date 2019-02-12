@@ -31,8 +31,8 @@
  */
 module net.tascalate.asmx.util {
     requires transitive net.tascalate.asmx;
-    requires net.tascalate.asmx.tree;
-    requires net.tascalate.asmx.tree.analysis;
+    requires net.tascalate.asmx.tree; //transitive in ASM, not necessary
+    requires net.tascalate.asmx.tree.analysis; //transitive in ASM, not necessary
 
     exports net.tascalate.asmx.util;
 }

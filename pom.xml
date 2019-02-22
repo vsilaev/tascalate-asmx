@@ -57,41 +57,6 @@
 
 	<dependencyManagement>
 		<dependencies>
-			<dependency>
-				<groupId>org.ow2.asm</groupId>
-				<artifactId>asm</artifactId>
-				<version>${asm.version}</version>
-				<scope>provided</scope>
-				<optional>true</optional>
-			</dependency>
-			<dependency>
-				<groupId>org.ow2.asm</groupId>
-				<artifactId>asm-tree</artifactId>
-				<version>${asm.version}</version>
-				<scope>provided</scope>
-				<optional>true</optional>
-			</dependency>
-			<dependency>
-				<groupId>org.ow2.asm</groupId>
-				<artifactId>asm-analysis</artifactId>
-				<version>${asm.version}</version>
-				<scope>provided</scope>
-				<optional>true</optional>
-			</dependency>
-			<dependency>
-				<groupId>org.ow2.asm</groupId>
-				<artifactId>asm-commons</artifactId>
-				<version>${asm.version}</version>
-				<scope>provided</scope>
-				<optional>true</optional>
-			</dependency>
-			<dependency>
-				<groupId>org.ow2.asm</groupId>
-				<artifactId>asm-util</artifactId>
-				<version>${asm.version}</version>
-				<scope>provided</scope>
-				<optional>true</optional>
-			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -111,6 +76,7 @@
 			<id>release</id>
 			<build>
 				<plugins>
+					<!--
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-source-plugin</artifactId>
@@ -124,18 +90,55 @@
 							</execution>
 						</executions>
 					</plugin>
+					-->
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-javadoc-plugin</artifactId>
 						<version>3.0.1</version>
 						<executions>
 							<execution>
-								<id>attach-javadocs</id>
+								<id>aggregate-javadoc</id>
 								<goals>
 									<goal>jar</goal>
 								</goals>
+								<phase>package</phase>
+								<configuration>
+									<doctitle>${project.name}, v. ${project.version}</doctitle>
+									<includeDependencySources>true</includeDependencySources>
+									<dependencySourceExcludes>
+										<dependencySourceExclude>net.tascalate:*</dependencySourceExclude>
+									</dependencySourceExcludes>
+									<dependencySourceIncludes>
+										<dependencySourceInclude>org.ow2.asm:*</dependencySourceInclude>
+									</dependencySourceIncludes>
+								</configuration>
 							</execution>
 						</executions>
+						<configuration>
+							<aggregate>true</aggregate>
+							<doclint>none</doclint>
+							<detectJavaApiLink>true</detectJavaApiLink>
+							<links>
+								<link>https://asm.ow2.io/javadoc/</link>
+							</links>
+							<additionalDependencies>
+								<additionalDependency>
+									<groupId>org.ow2.asm</groupId>
+									<artifactId>asm</artifactId>
+									<version>${asm.version}</version>
+								</additionalDependency>
+								<additionalDependency>
+									<groupId>org.ow2.asm</groupId>
+									<artifactId>asm-tree</artifactId>
+									<version>${asm.version}</version>
+								</additionalDependency>
+								<additionalDependency>
+									<groupId>org.ow2.asm</groupId>
+									<artifactId>asm-analysis</artifactId>
+									<version>${asm.version}</version>
+								</additionalDependency>
+							</additionalDependencies>					
+						</configuration>
 					</plugin>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
@@ -180,29 +183,29 @@
 					</execution> 
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>org.moditect</groupId>
+				<artifactId>moditect-maven-plugin</artifactId>
+				<version>1.0.0.Beta2</version>
+				<executions>
+					<execution>
+						<id>add-module-infos</id>
+						<phase>package</phase>
+						<goals>
+							<goal>add-module-info</goal>
+						</goals>
+						<configuration>
+							<jvmVersion>9</jvmVersion>
+							<module>
+								<moduleInfoFile>src/main/java9/module-info.java</moduleInfoFile>
+							</module>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 		<pluginManagement>
 			<plugins>
-				<plugin>
-					<groupId>org.moditect</groupId>
-					<artifactId>moditect-maven-plugin</artifactId>
-					<version>1.0.0.Beta2</version>
-					<executions>
-						<execution>
-							<id>add-module-infos</id>
-							<phase>package</phase>
-							<goals>
-								<goal>add-module-info</goal>
-							</goals>
-							<configuration>
-								<jvmVersion>9</jvmVersion>
-								<module>
-									<moduleInfoFile>src/main/java/module-info.java</moduleInfoFile>
-								</module>
-							</configuration>
-						</execution>
-					</executions>
-				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-shade-plugin</artifactId>
@@ -215,6 +218,8 @@
 							</goals>
 							<configuration>
 								<createDependencyReducedPom>false</createDependencyReducedPom>
+								<createSourcesJar>true</createSourcesJar>
+								<shadeSourcesContent>true</shadeSourcesContent>
 								<relocations>
 									<relocation>
 										<pattern>org.objectweb.asm</pattern>

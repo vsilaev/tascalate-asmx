@@ -199,6 +199,7 @@
 							<module>
 								<moduleInfoFile>src/main/java9/module-info.java</moduleInfoFile>
 							</module>
+							<version>${project.version}</version>
 						</configuration>
 					</execution>
 				</executions>

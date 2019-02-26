@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>net.tascalate</groupId>
 		<artifactId>net.tascalate.asmx.parent</artifactId>
-		<version>7.0.0</version>
+		<version>7.0.1</version>
 		<relativePath>../</relativePath>
 	</parent>
 
@@ -12,9 +12,11 @@
 	<packaging>jar</packaging>
 
 	<name>Tascalate ASMX / ASM</name>
+	<description>Tascalate ASMX, ObjectWeb ASM (shaded), a very small and fast Java bytecode manipulation framework</description>
 
 	<properties>
-		<license.header>../HEADER-DERRIVED.txt</license.header>
+		<bundle.name>net.tascalate.asmx</bundle.name>
+		<export.packages>net.tascalate.asmx;version="${asm.version}",net.tascalate.asmx.signature;version="${asm.version}"</export.packages>
 	</properties>
 
 	<dependencies>

@@ -6,7 +6,7 @@
 
 	<groupId>net.tascalate</groupId>
 	<artifactId>net.tascalate.asmx.parent</artifactId>
-	<version>7.1.0</version>
+	<version>9.2.0</version>
 	<packaging>pom</packaging>
 
 	<name>Tascalate ASMX</name>
@@ -51,9 +51,9 @@
 	</modules>
 
 	<properties>
-                <asm.version>7.1</asm.version>
+                <asm.version>9.2</asm.version>
 		<asm.current.version>${asm.version}</asm.current.version>
-		<asm.next.version>8</asm.next.version>
+		<asm.next.version>10</asm.next.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 

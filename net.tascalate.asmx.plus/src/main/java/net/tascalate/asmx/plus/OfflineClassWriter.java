@@ -42,7 +42,7 @@ public class OfflineClassWriter extends ClassWriter {
         this.classHierarchy = classHierarchy;
     }
     
-    public OfflineClassWriter(ClassHierarchy classHierarchy, @SuppressWarnings("exports") ClassReader reader, int flags) {
+    public OfflineClassWriter(ClassHierarchy classHierarchy, ClassReader reader, int flags) {
         super(reader, flags);
         this.classHierarchy = classHierarchy;
     }

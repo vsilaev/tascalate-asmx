@@ -82,6 +82,10 @@ public class ClassHierarchy {
         this.lookupCache = lookupCache;        
         this.typesCache = typesCache;
     }
+
+    public ResourceLoader loader() {
+        return loader;
+    }
     
     public ClassHierarchy shareWith(ResourceLoader resourceLoader) {
         if (resourceLoader == this.loader) {
@@ -114,7 +118,7 @@ public class ClassHierarchy {
         return result;
     }
     
-    Type getCommonSuperType(Type type1, Type type2) {
+    public Type getCommonSuperType(Type type1, Type type2) {
         return Type.getObjectType(getCommonSuperClass(type1.getInternalName(), type2.getInternalName()));
     }
     

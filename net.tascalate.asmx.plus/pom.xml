@@ -8,15 +8,15 @@
 		<relativePath>../</relativePath>
 	</parent>
 
-	<artifactId>net.tascalate.asmx.tree</artifactId>
+	<artifactId>net.tascalate.asmx.plus</artifactId>
 	<packaging>jar</packaging>
 
-	<name>Tascalate ASMX / ASM Tree</name>
-	<description>Tascalate ASMX, tree API of ObjectWeb ASM (shaded), a very small and fast Java byte code manipulation framework</description>
+	<name>Tascalate ASMX / ASM Plus</name>
+	<description>Tascalate ASMX, Tascalate API add-on for the ObjectWeb ASM (shaded), a very small and fast Java byte code manipulation framework</description>
 
 	<properties>
-		<bundle.name>net.tascalate.asmx.tree</bundle.name>
-		<export.packages>net.tascalate.asmx.tree;version="${asm.current.version}";uses:="net.tascalate.asmx"</export.packages>
+		<bundle.name>net.tascalate.asmx.plus</bundle.name>
+		<export.packages>net.tascalate.asmx.plus;version="${asm.current.version}";uses:="net.tascalate.asmx"</export.packages>
 		<import.packages>net.tascalate.asmx;version="[${asm.current.version},${asm.next.version})"</import.packages>
 	</properties>
 
@@ -26,22 +26,32 @@
 			<artifactId>net.tascalate.asmx</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.ow2.asm</groupId>
-			<artifactId>asm-tree</artifactId>
-			<version>${asm.version}</version>
-			<scope>compile</scope>
-			<optional>true</optional>
-			<exclusions>
-				<exclusion>
-					<groupId>org.ow2.asm</groupId>
-					<artifactId>asm</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>default-compile</id>
+						<phase>compile</phase>
+					</execution> 
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>3.2.1</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.moditect</groupId>
 				<artifactId>moditect-maven-plugin</artifactId>

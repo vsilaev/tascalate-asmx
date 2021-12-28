@@ -29,8 +29,31 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-module net.tascalate.asmx.tree.analysis {
-    requires transitive net.tascalate.asmx.tree;
+package net.tascalate.asmx.plus;
 
-    exports net.tascalate.asmx.tree.analysis;
+import net.tascalate.asmx.ClassReader;
+import net.tascalate.asmx.ClassWriter;
+
+public class OfflineClassWriter extends ClassWriter {
+    private final ClassHierarchy classHierarchy;
+    
+    public OfflineClassWriter(ClassHierarchy classHierarchy, int flags) {
+        super(flags);
+        this.classHierarchy = classHierarchy;
+    }
+    
+    public OfflineClassWriter(ClassHierarchy classHierarchy, @SuppressWarnings("exports") ClassReader reader, int flags) {
+        super(reader, flags);
+        this.classHierarchy = classHierarchy;
+    }
+    
+    @Override
+    protected String getCommonSuperClass(final String type1, final String type2) {
+        return classHierarchy.getCommonSuperClass(type1, type2);
+    }
+    
+    @Override
+    protected ClassLoader getClassLoader() {
+        throw new UnsupportedOperationException();
+    }
 }

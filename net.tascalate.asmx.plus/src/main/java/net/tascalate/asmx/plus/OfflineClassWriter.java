@@ -56,4 +56,8 @@ public class OfflineClassWriter extends ClassWriter {
     protected ClassLoader getClassLoader() {
         throw new UnsupportedOperationException();
     }
+
+    public int api() {
+        return api; 
+    }
 }

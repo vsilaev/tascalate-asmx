@@ -53,7 +53,7 @@
 
 	<properties>
                 <asm.version>9.3</asm.version>
-		<asm.current.version>${asm.version}</asm.current.version>
+		<asm.current.version>${asm.version}.0</asm.current.version>
 		<asm.next.version>10</asm.next.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>

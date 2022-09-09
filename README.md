@@ -3,4 +3,4 @@
 # Tascalate Asmx
 Shaded version of the [ObjectWeb ASM](https://asm.ow2.io/) library to use in Tascalate projects to avoid clashes between classes / modules. 
 
-As of now, it shades OW2 ASM 9.2. The _major_ and _minor_ version of the library matches exactly the version of the ASM library used, build version is left for internal fixes and extensions.
+As of now, it shades OW2 ASM 9.3. The _major_ and _minor_ version of the library matches exactly the version of the ASM library used, build version is left for internal fixes and extensions.

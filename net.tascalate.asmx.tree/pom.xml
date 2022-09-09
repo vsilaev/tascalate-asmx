@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>net.tascalate</groupId>
 		<artifactId>net.tascalate.asmx.parent</artifactId>
-		<version>9.2.1</version>
+		<version>9.3.0</version>
 		<relativePath>../</relativePath>
 	</parent>
 

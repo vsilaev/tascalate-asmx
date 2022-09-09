@@ -87,6 +87,41 @@ public class InheritanceLookupTest {
         assertEquals("java/util/Queue", lookup.getCommonSuperClass("net/tascalate/asmx/plus/InheritanceLookupTest$TestList", "java/util/Queue"));
     }
     
+    @Test
+    public void testArrays() throws IOException {
+        ClassHierarchy.TypeInfo info1 = lookup.getTypeInfo("[Ljava/util/List;");
+        ClassHierarchy.TypeInfo info2 = lookup.getTypeInfo("[Ljava/util/LinkedList;");
+        
+        assertTrue(info2.isSubclassOf(info1));
+        
+        info1 = lookup.getTypeInfo("[[[Ljava/util/List;");
+        info2 = lookup.getTypeInfo("[[[Ljava/util/LinkedList;");
+        
+        assertTrue(info2.isSubclassOf(info1));
+        
+        
+        info1 = lookup.getTypeInfo("[Ljava/lang/Object;");
+        info2 = lookup.getTypeInfo("[[Ljava/util/List;");
+                
+        assertTrue(info2.isSubclassOf(info1));     
+        
+        info1 = lookup.getTypeInfo("[[Ljava/lang/Object;");
+        info2 = lookup.getTypeInfo("[[[Ljava/util/List;");
+                
+        assertTrue(info2.isSubclassOf(info1));   
+        
+        info1 = lookup.getTypeInfo("java/lang/Object");
+        info2 = lookup.getTypeInfo("[I");
+                
+        assertTrue(info2.isSubclassOf(info1));
+        
+        info1 = lookup.getTypeInfo("[Ljava/lang/Object;");
+        info2 = lookup.getTypeInfo("[[I");
+                
+        assertTrue(info2.isSubclassOf(info1));  
+        
+    }
+    
     
     @Test
     public void testTypeInfo() throws IOException {

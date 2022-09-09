@@ -36,6 +36,7 @@ import java.io.InputStream;
 import java.lang.ref.Reference;
 import java.lang.ref.SoftReference;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -175,15 +176,56 @@ public class ClassHierarchy {
      *             if the bytecode of 'type' cannot be loaded.
      */
     private TypeInfo loadTypeInfo(String type) throws IOException {
-        InputStream is = loader.getResourceAsStream(type + ".class");
-        try {
-            ClassReader info = new ClassReader(is);
-            return new TypeInfo(info.getClassName(), 
-                                info.getSuperName(), 
-                                info.getInterfaces(),
-                                (info.getAccess() & Opcodes.ACC_INTERFACE) != 0);            
-        } finally {
-            is.close();
+        if (type.charAt(0) == '[') {
+            String elementTypeName = type.substring(1);
+            TypeInfo elementType;
+            switch (elementTypeName.charAt(0)) {
+                case '[': 
+                    elementType = getTypeInfo(elementTypeName);
+                    break;
+                case 'Z': 
+                    elementType = BOOLEAN;
+                    break;
+                case 'B': 
+                    elementType = BYTE;
+                    break;
+                case 'C': 
+                    elementType = CHAR;
+                    break;
+                case 'S':
+                    elementType = SHORT;
+                    break;
+                case 'I': 
+                    elementType = INT;
+                    break;
+                case 'J': 
+                    elementType = LONG;
+                    break;
+                case 'F': 
+                    elementType = FLOAT;
+                    break;
+                case 'D':
+                    elementType = DOUBLE;
+                    break;
+                case 'L':
+                    elementType = getTypeInfo(elementTypeName.substring(1, elementTypeName.indexOf(';')));
+                    break;
+                default:
+                    throw new IOException("Unknown element type " + elementTypeName);
+                
+            }
+            return new ArrayTypeInfo(type, elementType);
+        } else {
+            InputStream is = loader.getResourceAsStream(type + ".class");
+            try {
+                ClassReader info = new ClassReader(is);
+                return new TypeInfo(info.getClassName(), 
+                                    info.getSuperName(), 
+                                    info.getInterfaces(),
+                                    (info.getAccess() & Opcodes.ACC_INTERFACE) != 0);            
+            } finally {
+                is.close();
+            }
         }
     }
     
@@ -320,6 +362,10 @@ public class ClassHierarchy {
             return isInterface ? 1 : 0;
         }
         
+        public String toElementString() {
+            return 'L' + toString() + ';';
+        }
+        
         @Override
         public String toString() {
             return name;
@@ -335,7 +381,7 @@ public class ClassHierarchy {
             if ((null == other) || !(other instanceof TypeInfo)) {
                 return false;
             }
-            return this == other || name.equals(((TypeInfo)other).name);
+            return this == other || /*this.getClass() == other.getClass() &&*/ name.equals(((TypeInfo)other).name);
         }
     }
     
@@ -365,6 +411,98 @@ public class ClassHierarchy {
             return 0;
         }
     };
+    
+    class PrimitiveTypeInfo extends TypeInfo {
+        PrimitiveTypeInfo(String name) {
+            super(name, null, null, false);
+        }
+        
+        @Override
+        TypeInfo superClass() {
+            return null;
+        }
+        
+        @Override
+        TypeInfo[] interfaces() {
+            return EMPTY_TYPE_INFOS;
+        }
+        
+        @Override
+        boolean isSubclassOf(TypeInfo base) {
+            return equals(base);
+        }
+        
+        @Override
+        List<TypeInfo> flattenHierarchy() {
+            return Collections.<TypeInfo>singletonList(this);
+        }
+        
+        @Override
+        int flattenHierarchy(Queue<TypeInfo> s, SortedSet<InterfaceEntry> i, Set<String> v, int d) {
+            return 0;
+        }   
+        
+        @Override
+        public String toElementString() {
+            return toString();
+        }
+    }
+    
+    class ArrayTypeInfo extends TypeInfo {
+        private final TypeInfo elementType;
+        
+        ArrayTypeInfo(String name, TypeInfo elementType) {
+            super(name, OBJECT.name, null, false);
+            this.elementType = elementType;
+        }
+        
+        @Override
+        TypeInfo superClass() {
+            return OBJECT;
+        }
+        
+        @Override
+        TypeInfo[] interfaces() {
+            return EMPTY_TYPE_INFOS;
+        }
+        
+        @Override
+        boolean isSubclassOf(TypeInfo base) throws IOException {
+            return this.equals(base)   || 
+                   OBJECT.equals(base) ||
+                   base instanceof ArrayTypeInfo && elementType.isSubclassOf( ((ArrayTypeInfo)base).elementType );
+        }
+        
+        @Override
+        List<TypeInfo> flattenHierarchy() {
+            return Arrays.asList(this, OBJECT);
+        }
+        
+        @Override
+        int flattenHierarchy(Queue<TypeInfo> s, SortedSet<InterfaceEntry> i, Set<String> v, int d) {
+            return 0;
+        }   
+        
+        @Override
+        public String toString() {
+            return '[' + elementType.toElementString();
+        }
+        
+        @Override
+        public String toElementString() {
+            return toString();
+        }
+    }    
+    
+    private final TypeInfo BOOLEAN = new PrimitiveTypeInfo("Z");
+    private final TypeInfo BYTE = new PrimitiveTypeInfo("B");
+    private final TypeInfo CHAR = new PrimitiveTypeInfo("C");
+    private final TypeInfo SHORT = new PrimitiveTypeInfo("S");
+    private final TypeInfo INT = new PrimitiveTypeInfo("I");
+    private final TypeInfo LONG = new PrimitiveTypeInfo("J");
+    private final TypeInfo FLOAT = new PrimitiveTypeInfo("F");
+    private final TypeInfo DOUBLE = new PrimitiveTypeInfo("D");
+    
     
     class SpecialInterfaceInfo extends TypeInfo {
         SpecialInterfaceInfo(String name, String[] interfaceNames) {

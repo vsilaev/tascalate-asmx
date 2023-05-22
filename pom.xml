@@ -6,7 +6,7 @@
 
 	<groupId>net.tascalate</groupId>
 	<artifactId>net.tascalate.asmx.parent</artifactId>
-	<version>9.4.0</version>
+	<version>9.5.0</version>
 	<packaging>pom</packaging>
 
 	<name>Tascalate ASMX</name>
@@ -52,7 +52,7 @@
 	</modules>
 
 	<properties>
-                <asm.version>9.4</asm.version>
+                <asm.version>9.5</asm.version>
 		<asm.current.version>${asm.version}.0</asm.current.version>
 		<asm.next.version>10</asm.next.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -212,7 +212,7 @@
 				<plugin>
 					<groupId>org.moditect</groupId>
 					<artifactId>moditect-maven-plugin</artifactId>
-					<version>1.0.0.RC2</version>
+					<version>1.0.0.Final</version>
 					<executions>
 						<execution>
 							<id>add-module-infos</id>

@@ -6,7 +6,7 @@
 
 	<groupId>net.tascalate</groupId>
 	<artifactId>net.tascalate.asmx.parent</artifactId>
-	<version>9.8.0</version>
+	<version>9.9.1</version>
 	<packaging>pom</packaging>
 
 	<name>Tascalate ASMX</name>
@@ -52,8 +52,8 @@
 	</modules>
 
 	<properties>
-                <asm.version>9.8</asm.version>
-		<asm.current.version>${asm.version}.0</asm.current.version>
+		<asm.version>9.9.1</asm.version>
+		<asm.current.version>${asm.version}</asm.current.version>
 		<asm.next.version>10</asm.next.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
@@ -66,11 +66,11 @@
 	<distributionManagement>
 		<snapshotRepository>
 			<id>ossrh</id>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+			<url>https://central.sonatype.com/snapshots</url>
 		</snapshotRepository>
 		<repository>
 			<id>ossrh</id>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+			<url>https://central.sonatype.com</url>
 		</repository>
 	</distributionManagement>
 
@@ -97,7 +97,7 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-javadoc-plugin</artifactId>
-						<version>3.11.2</version>
+						<version>3.12.0</version>
 						<executions>
 							<execution>
 								<id>aggregate-javadoc</id>
@@ -118,7 +118,6 @@
 							</execution>
 						</executions>
 						<configuration>
-							<aggregate>true</aggregate>
 							<doclint>none</doclint>
 							<detectJavaApiLink>true</detectJavaApiLink>
 							<links>
@@ -146,7 +145,7 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-gpg-plugin</artifactId>
-						<version>3.2.7</version>
+						<version>3.2.8</version>
 						<executions>
 							<execution>
 								<id>sign-artifacts</id>
@@ -165,20 +164,18 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.sonatype.plugins</groupId>
-				<artifactId>nexus-staging-maven-plugin</artifactId>
-				<version>1.7.0</version>
+				<groupId>org.sonatype.central</groupId>
+				<artifactId>central-publishing-maven-plugin</artifactId>
+				<version>0.9.0</version>
 				<extensions>true</extensions>
 				<configuration>
-					<serverId>ossrh</serverId>
-					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
-					<autoReleaseAfterClose>false</autoReleaseAfterClose>
+					<publishingServerId>ossrh</publishingServerId>
 				</configuration>
-			</plugin> 
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.14.0</version>
+				<version>3.14.1</version>
 				<executions>
 					<execution>
 						<id>default-compile</id>
@@ -189,7 +186,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.4.2</version>
+				<version>3.5.0</version>
 				<configuration>
 					<archive>
 						<manifestEntries>
@@ -213,7 +210,7 @@
 				<plugin>
 					<groupId>org.moditect</groupId>
 					<artifactId>moditect-maven-plugin</artifactId>
-					<version>1.2.2.Final</version>
+					<version>1.3.0.Final</version>
 					<executions>
 						<execution>
 							<id>add-module-infos</id>
@@ -226,7 +223,6 @@
 								<module>
 									<moduleInfoFile>src/main/java9/module-info.java</moduleInfoFile>
 								</module>
-								<version>${project.version}</version>
 							</configuration>
 						</execution>
 					</executions>
@@ -234,7 +230,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-shade-plugin</artifactId>
-					<version>3.6.0</version>
+					<version>3.6.1</version>
 					<executions>
 						<execution>
 							<phase>package</phase>
